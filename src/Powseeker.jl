@@ -37,7 +37,8 @@ export
 
     mdp,
 
-    Downhill
+    Downhill,
+    Topout
 
 include("peaks.jl")
 

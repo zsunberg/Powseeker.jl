@@ -9,13 +9,21 @@ function action(p::Downhill, s::SkierState)
     return steepest - s.psi
 end
 
-#=
-immutable Topout <: Policy end
-
-function action(::Topout, s::SkierState)
-    grad
+immutable Topout{G<:Function} <: Policy
+    mdp::PowseekerMDP{G}
+    tol::Float64
 end
-=#
+Topout(p::PowseekerProblem, tol::Float64) = Topout(mdp(p), tol)
+
+function action(p::Topout, s::SkierState)
+    grad = p.mdp.gradient(s.pos)
+    if s.time >= p.mdp.duration || norm(grad) < p.tol # topped out
+        return action(Downhill(p.mdp.gradient), s)
+    else
+        up = atan2(grad[2], grad[1])
+        return up-s.psi
+    end
+end
 
 #=
 @with_kw immutable Center <: Policy
