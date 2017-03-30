@@ -58,11 +58,12 @@ end
 immutable SkierObs
     time::Int
     pos::Nullable{Vec2}
+    dir::Nullable{Float64}
     dist::Float64
     grad::Vec2
 
-    SkierObs(t::Int, p::Vec2) = new(t, Nullable{Vec2}(p))
-    SkierObs(t::Int, d::Float64, g::Vec2) = new(t, Nullable{Vec2}(), d, g)
+    SkierObs(t::Int, p::Vec2, dir::Float64) = new(t, Nullable{Vec2}(p), Nullable{Float64}(dir))
+    SkierObs(t::Int, d::Float64, g::Vec2) = new(t, Nullable{Vec2}(), Nullable{Float64}(), d, g)
 end
 
 @with_kw immutable PowseekerMDP{G<:Function} <: MDP{SkierState, Float64}
@@ -74,8 +75,8 @@ end
     force::Float64          = 4.0
     terminal_vel::Float64   = 50.0
     max_flat_speed::Float64 = 4.0
-    psi_std::Float64        = deg2rad(2.0)
-    vel_std::Float64        = 0.2
+    psi_std::Float64        = deg2rad(0.5)
+    vel_std::Float64        = 0.05
     xlim::NTuple{2,Float64} = (-4000.0, 4000.0)
     ylim::NTuple{2,Float64} = (-4000.0, 4000.0)
 end
@@ -85,6 +86,7 @@ end
     dist_std_frac::Float64  = 0.3
     grad_std::Float64       = 0.2
     gps_std::Float64        = 50.0
+    compass_std::Float64    = deg2rad(10.0)
 end
 
 typealias PowseekerProblem Union{PowseekerMDP, PowseekerPOMDP}
