@@ -8,13 +8,13 @@ function plot_ro(policy::Policy)
     xs = linspace(-4000, 4000, 100)
     ys = linspace(-4000, 4000, 100)
     
-    contour(xs, ys, (x,y)->log(simxy(policy, x, y)), fill=true, title="$(typeof(policy))", zlim=(0,40))
+    contour(xs, ys, (x,y)->simxy(policy, x, y), fill=true, title="$(typeof(policy))", zlim=(0,40))
 end
 
 function simxy(policy, x, y)
     mdp = PowseekerMDP()
     sim = RolloutSimulator(max_steps=mdp.duration, rng=MersenneTwister(1))
-    s = SkierState(1, [x, y], deg2rad(270))
+    s = SkierState(1, [x, y], deg2rad(90))
     return simulate(sim, mdp, policy, s)
 end
 

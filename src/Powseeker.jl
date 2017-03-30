@@ -110,7 +110,7 @@ function generate_sr(pp::PowseekerProblem, s::SkierState, a::Float64, rng::Abstr
         pos += vec[2]*dir
         psi += randn(rng)*p.psi_std
         r += exp(vel)
-        # r += vel^4
+        # r += vel^8
     end
     sp = SkierState(s.time+1, pos, psi)
     r /= isteps
