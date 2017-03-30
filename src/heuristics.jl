@@ -25,6 +25,24 @@ function action(p::Topout, s::SkierState)
     end
 end
 
+immutable SkiOver{G<:Function} <: Policy
+    mdp::PowseekerMDP{G}
+end
+SkiOver(p::PowseekerProblem) = SkiOver(mdp(p))
+
+function action(p::SkiOver, s::SkierState)
+    grad = p.mdp.gradient(s.pos)
+    if s.time >= p.mdp.duration
+        return action(Downhill(p.mdp.gradient), s)
+    elseif dot(grad, [cos(s.psi), sin(s.psi)]) > 0 # facing uphill
+        up = atan2(grad[2], grad[1])
+        return up-s.psi
+    else
+        down = atan2(-grad[2], -grad[1])
+        return down-s.psi
+    end
+end
+
 #=
 @with_kw immutable Center <: Policy
     rng::MersenneTwister = MersenneTwister(14)

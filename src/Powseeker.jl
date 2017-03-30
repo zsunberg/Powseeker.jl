@@ -38,7 +38,8 @@ export
     mdp,
 
     Downhill,
-    Topout
+    Topout,
+    SkiOver
 
 include("peaks.jl")
 
@@ -74,7 +75,7 @@ end
     terminal_vel::Float64   = 50.0
     max_flat_speed::Float64 = 4.0
     psi_std::Float64        = deg2rad(2.0)
-    vel_std::Float64        = 0.3
+    vel_std::Float64        = 0.2
     xlim::NTuple{2,Float64} = (-4000.0, 4000.0)
     ylim::NTuple{2,Float64} = (-4000.0, 4000.0)
 end
@@ -107,6 +108,7 @@ function generate_sr(pp::PowseekerProblem, s::SkierState, a::Float64, rng::Abstr
         pos += vec[2]*dir
         psi += randn(rng)*p.psi_std
         r += exp(vel)
+        # r += vel^4
     end
     sp = SkierState(s.time+1, pos, psi)
     r /= isteps
