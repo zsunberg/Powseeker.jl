@@ -43,6 +43,22 @@ function action(p::SkiOver, s::SkierState)
     end
 end
 
+immutable RandomlyCheckGPS{P<:Policy, RNG<:AbstractRNG} <: Policy
+    p::P
+    p_check::Float64
+    rng::RNG
+end
+
+function action(p::RandomlyCheckGPS, b)
+    check = rand(p.rng) < p.p_check
+    if check
+        return GPSOrAngle(true, 0.0)
+    else
+        s = rand(p.rng, b)
+        return GPSOrAngle(false, action(p.p, s))
+    end
+end
+
 #=
 @with_kw immutable Center <: Policy
     rng::MersenneTwister = MersenneTwister(14)

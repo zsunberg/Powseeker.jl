@@ -39,7 +39,8 @@ export
 
     Downhill,
     Topout,
-    SkiOver
+    SkiOver,
+    RandomlyCheckGPS
 
 include("peaks.jl")
 
