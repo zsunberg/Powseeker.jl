@@ -21,8 +21,8 @@ end
     psis = collect(s.psi for s in v)
     xs = collect(s.pos[1] for s in v)
     ys = collect(s.pos[2] for s in v)
-    us = len*cos(psis)
-    vs = len*sin(psis)
+    us = len*cos.(psis)
+    vs = len*sin.(psis)
     @series begin
         label --> "True Path"
         xs, ys
@@ -61,8 +61,8 @@ end
     psis = collect(s.psi for s in v)
     xs = collect(s.pos[1] for s in v)
     ys = collect(s.pos[2] for s in v)
-    us = len*cos(psis)
-    vs = len*sin(psis)
+    us = len*cos.(psis)
+    vs = len*sin.(psis)
     @series begin
         color --> "black"
         seriestype --> :quiver

@@ -14,7 +14,7 @@ import POMDPs: pdf
 import POMDPs: action
 import Base: rand, eltype
 
-typealias Vec2 SVector{2,Float64}
+const Vec2 = SVector{2,Float64}
 
 export
     PowseekerMDP,
